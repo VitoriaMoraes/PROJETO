@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TELAcadastro extends javax.swing.JFrame {
-    
+
     public TELAcadastro() {
         initComponents();
     }
@@ -186,51 +186,52 @@ public class TELAcadastro extends javax.swing.JFrame {
 
     private void botaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExcluirActionPerformed
         // TODO add your handling code here:
-           
+
              ContasDAO inserir = new ContasDAO();
              Contas conta1 = new Contas();
-             
+
              if(jTabela.getSelectedRow()!= -1){
-                 
+
 
              conta1.setIdConta((int)jTabela.getValueAt(jTabela.getSelectedRow(), 2));
 
                 inserir.apagarRegistro(conta1.getIdConta());
-                
+
                 campoDesc.setText("");
                 campoPreco.setText("");
                 campoID.setText("");
              }
                 readjTabela();
                 JOptionPane.showMessageDialog(null," selecione o id da conta para excluir");
-        
+
     }//GEN-LAST:event_botaoExcluirActionPerformed
 
     private void botaoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroActionPerformed
         // TODO add your handling code here:
-           ContasDAO inserir = new ContasDAO();
-           Contas conta1 = new Contas();
-           
-           conta1.setDescricaoConta(campoDesc.getText());
-           conta1.setprecoConta(Double.parseDouble(campoPreco.getText()));
-           
+           ContasDAO dao = new ContasDAO();
+           Contas conta = new Contas();
+
+           conta.setDescricaoConta(campoDesc.getText());
+           conta.setprecoConta(Double.parseDouble(campoPreco.getText()));
+
         try {
-            inserir.salvarContas(conta1);
-            String [] guardar = new String [inserir.getContas().size()];
-            for(Contas conta: inserir.getContas()){
-                System.out.println("descrição "+ conta.getDescricaoConta());
-                //guardar []
-            }
+            dao.salvarContas(conta);
             DefaultTableModel cadastro = (DefaultTableModel)jTabela.getModel();
-            Object [][] dados ={{campoDesc.getText(), campoPreco.getText()},{campoDesc.getText(), campoPreco.getText()}};
+            // Contas conta = new Contas();
+            // String [] guardar = new String [dao.getContas().size()];
+            for(Contas c: dao.getContas()){
+                System.out.println("descrição "+ conta.getDescricaoConta());
+                Object [] dados ={ c.getDescricaoConta(), c.getprecoConta(), c.getIdConta() };
+                cadastro.addRow(dados);
+            }
+            // Object [] dados ={campoDesc.getText(), campoPreco.getText()};
            // cadastro.addRow(inserir.getContas());
-           cadastro.addRow(dados);
         } catch (SQLException ex) {
             Logger.getLogger(TELAcadastro.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(TELAcadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_botaoCadastroActionPerformed
 
     private void botaoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSairActionPerformed
@@ -242,11 +243,11 @@ public class TELAcadastro extends javax.swing.JFrame {
     private void botaoAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAtualizarActionPerformed
         // TODO add your handling code here:
              Contas atualizado = new Contas();
-        
+
         if(jTabela.getSelectedRow()!= -1){
              ContasDAO inserir = new ContasDAO();
              Contas conta1 = new Contas();
-           
+
              conta1.setDescricaoConta(campoDesc.getText());
              conta1.setprecoConta(Double.parseDouble(campoPreco.getText()));
              conta1.setIdConta((int)jTabela.getValueAt(jTabela.getSelectedRow(), 2));
@@ -260,7 +261,7 @@ public class TELAcadastro extends javax.swing.JFrame {
         if(jTabela.getSelectedRow()!= -1){
             campoDesc.setText((String) jTabela.getValueAt(jTabela.getSelectedRow(), 0));
             campoPreco.setText((String) jTabela.getValueAt(jTabela.getSelectedRow(), 1));
-           
+
         }
     }//GEN-LAST:event_jTabelaKeyReleased
 
@@ -271,7 +272,7 @@ public class TELAcadastro extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
